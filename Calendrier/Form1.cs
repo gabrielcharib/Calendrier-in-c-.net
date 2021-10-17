@@ -37,7 +37,7 @@ namespace Calendrier
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            fillFromDateFirstThisMonth(firstDAY(), lastDay());
+            fillFromDateFirstThisMonth(firstDAY(), lastDayOfMonth());
 
         }
 
@@ -79,30 +79,34 @@ namespace Calendrier
             // Cette méthode retourne le premier jour du MOIS COURANT et convertit les jours de la semaine en valeur int pour remplir le tableau
             textCurrentMonth(today);
             DateTime thisDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            return convertDays(thisDay);
+            return convertDaysToInt(thisDay);
         }
 
-
+        /// <summary>
+        /// retuner le premier jour du mois suivant 
+        /// </summary>
+        /// <param name="cptClique"></param>
+        /// <returns></returns>
         private int firstDayNextMonth(int cptClique)// à chaque clique ça va faire +1
         {
-            // Cette méthode retourne le premier jour DES MOIS SUIVANTS et convertit les jours de la semaine en valeur int pour remplir le tableau
             DateTime dayNextMonth = new DateTime(today.AddMonths(cptClique).Year, today.AddMonths(cptClique).Month, 1);
-            //MessageBox.Show("firstDayNextMonth" + dayNextMonth);
-            textCurrentMonth(dayNextMonth);//ok
-            return convertDays(dayNextMonth);
+            textCurrentMonth(dayNextMonth);
+            return convertDaysToInt(dayNextMonth);
         }
 
         private int firstDayPrevMonth(int click)
         {
             DateTime dayPrevMonth = new DateTime(today.AddMonths(-click).Year, today.AddMonths(-click).Month, 1);
             textCurrentMonth(dayPrevMonth);
-            //MessageBox.Show(" firstDayPrevMonth" + dayPrevMonth);
-            return convertDays(dayPrevMonth);
+            return convertDaysToInt(dayPrevMonth);
         }
-
-        private int convertDays(DateTime thisDay)
+        /// <summary>
+        /// comvertite les noms des jours en int .pour repmir les tableaux 
+        /// </summary>
+        /// <param name="thisDay"></param>
+        /// <returns></returns>
+        private int convertDaysToInt(DateTime thisDay)
         {
-            // Cette méthode convertit les jours de la semaine en valeur int pour remplir le tableau
             if (thisDay.DayOfWeek == DayOfWeek.Monday)
             {
                 return 0;
@@ -133,31 +137,49 @@ namespace Calendrier
             }
             return 0;
         }
-        private int lastDay()
+
+        /// <summary>
+        /// calcule le dernier jour du mois 
+        /// </summary>
+        /// <returns>le dernier jours du mois </returns>
+        private int lastDayOfMonth()
         {
-            // cette méthode permet de calculer le dernier jour du MOIS COURANT
             DateTime dayOne = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             DateTime last = dayOne.AddMonths(1).AddDays(-1);
-            int dayMax = last.Day;//conversion de datetime en int
+            int dayMax = last.Day;
             return dayMax;
 
         }
+
+        /// <summary>
+        /// calculer le dernier jour du mois suivant 
+        /// </summary>
+        /// <param name="click"></param>
+        /// <returns></returns>
+        /// 
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////attantion ca resamble au code precesent//////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private int lastDayNextMonth(int click)
         {
-            // cette méthode permet de calculer le dernier jour du MOIS SUIVANT
             DateTime dayNextMonth = new DateTime(today.AddMonths(click).Year, today.AddMonths(click).Month, 1);
             DateTime last = dayNextMonth.AddMonths(1).AddDays(-1);
             int dayMax = last.Day;
-            //MessageBox.Show("" + dayMax);
             return dayMax;
         }
+
+        /// <summary>
+        /// calculer le dernier mois de mois precendent 
+        /// </summary>
+        /// <param name="click"></param>
+        /// <returns></returns>
         private int lastDayOfPreviousMonth(int click)
         {
-            // cette méthode premet de calculer le dernier jour du MOIS PRECEDENT
             DateTime dayOne = new DateTime(today.AddMonths(-click).Year, today.AddMonths(-click).Month, 1);
             DateTime last = dayOne.AddDays(-1);
             int dayMax = last.Day;
-            //MessageBox.Show("lastDayOfPreviousMonth" + dayMax);
             return dayMax;
 
         }
@@ -167,7 +189,7 @@ namespace Calendrier
             int y;
             x = 115;
             y = 60;
-            //DateTime day=day.Date
+
             CultureInfo culture = new CultureInfo("fr-BE");
 
             DayOfWeek weekDays = culture.DateTimeFormat.FirstDayOfWeek;//monday
@@ -196,23 +218,22 @@ namespace Calendrier
 
 
 
-
+        /// <summary>
+        /// remplir des boutons du calendrier 
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
         private void fillFromDateFirstThisMonth(int min, int max)
         {
-            // Cette méthode permet de remplir les boutons du calendrier
-
             int c = min;
             int r = 0;
             int dd = 1;
-            /*MessageBox.Show("min" + min);
-            MessageBox.Show("max" + max);*/
             while (dd != max)
             {
                 this.buttons[r, c].Text = dd.ToString();
-                //MessageBox.Show(" tab[ " + r + " , " + c + "  ]= " + this.buttons[r, c].Text);
                 dd++;
                 c++;
-                if (c == MaxCol)// if c==6
+                if (c == MaxCol)// arriver a la din de la commande 
                 {
                     c = 0;
                     r++;
@@ -241,6 +262,10 @@ namespace Calendrier
 
         }
 
+        /// <summary>
+        /// effacher les contenu des boutons 
+        ///.utiliser pour le changement de date 
+        /// </summary>
         private void clearButtons()
         {
             for (int i = 0; i < MaxRow; i++)
@@ -275,15 +300,5 @@ namespace Calendrier
         {
             Application.Exit();
         }
-
-
-        /* public String addNoteToday()
-         {
-             // firstday retourne l annee le mois
-             //stringtoday.ToString("M / yyyy");
-             return day;
-         }*/
-
-
     }
 }
