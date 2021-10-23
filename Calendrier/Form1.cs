@@ -31,14 +31,10 @@ namespace Calendrier
             InitializeComponent();
             createMonthButtons();
             daysLabels();
-
-
-
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             fillFromDateFirstThisMonth(firstDAY(), lastDayOfMonth());
-
         }
 
         private void textCurrentMonth(DateTime date)
@@ -65,6 +61,7 @@ namespace Calendrier
                     this.buttons[ligne, col].Size = new System.Drawing.Size(55, 55);
                     this.buttons[ligne, col].Text = "";
                     this.Controls.Add(buttons[ligne, col]);
+                    this.buttons[ligne, col].Click += new EventHandler(this.button_ClickEvent); //evenement quand on clique 
                     horizontal += 60;
 
                 }
@@ -211,12 +208,8 @@ namespace Calendrier
                     this.days[i].Text = DayOfWeek.Sunday.ToString();
                 }
 
-
             }
         }
-
-
-
 
         /// <summary>
         /// remplir des boutons du calendrier 
@@ -225,9 +218,10 @@ namespace Calendrier
         /// <param name="max"></param>
         private void fillFromDateFirstThisMonth(int min, int max)
         {
-            int c = min;
-            int r = 0;
-            int dd = 1;
+            ////changer nom variable///////////////////////
+            int c = min;// decalage de la semaine ()
+            int r = 0; 
+            int dd = 1; //friste numero day 
             while (dd != max)
             {
                 this.buttons[r, c].Text = dd.ToString();
@@ -239,12 +233,6 @@ namespace Calendrier
                     r++;
 
                 }
-                else if (r == MaxRow)
-                {
-                    r = 0;
-                    c++;
-                }
-
             }
             dd = max;
             this.buttons[r, c].Text = dd.ToString();
@@ -299,6 +287,21 @@ namespace Calendrier
         private void btQuit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+
+        /// <summary>
+        /// cree le forme 2 et l'afficher dans l'écran 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_ClickEvent(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            Form2 form = new Form2();
+            form.ShowDialog();
+            
+           
         }
     }
 }
